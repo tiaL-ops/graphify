@@ -55,9 +55,3 @@ maze-generator/
 - Improve animations for smoother user interaction.
 - Add a scoring system or game mode.
 ```
-
-### Instructions:
-- Copy the text above and paste it into a `README.md` file in your project folder.
-- Replace `<repository-url>` with your repository URL.
-
-This will help document your project in a clean, professional way that you can easily manage in VSCode! Let me know if you need any additional details.
