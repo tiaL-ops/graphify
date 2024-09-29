@@ -1,72 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { generatePrimMaze } from '../algorithms/prims'; // Maze generation logic
 import '../styles/MazeGrid.css';
 
 const MazeGrid = () => {
-  const initialMaze = [
-    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 1, 1, 1, 1, 1, 1, 0],
-    [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-    [0, 1, 1, 1, 1, 1, 1, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-    [1, 1, 1, 1, 1, 1, 1, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-    [0, 1, 1, 1, 1, 0, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  ];
+  const width = 9; // Maze width
+  const height = 9; // Maze height
+  const [maze, setMaze] = useState([]);
+  const [showSidebar, setShowSidebar] = useState(true);
 
-  const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
-
-  const handleKeyDown = (e) => {
-    let { x, y } = playerPosition;
-    if (e.key === 'ArrowUp' && x > 0 && initialMaze[x - 1][y] === 0) {
-      x -= 1;
-    } else if (e.key === 'ArrowDown' && x < initialMaze.length - 1 && initialMaze[x + 1][y] === 0) {
-      x += 1;
-    } else if (e.key === 'ArrowLeft' && y > 0 && initialMaze[x][y - 1] === 0) {
-      y -= 1;
-    } else if (e.key === 'ArrowRight' && y < initialMaze[0].length - 1 && initialMaze[x][y + 1] === 0) {
-      y += 1;
-    }
-
-    setPlayerPosition({ x, y });
+  // Generate a maze when the component mounts
+  const generateNewMaze = (seed = null) => {
+    const newMaze = generatePrimMaze(width, height); 
+    setMaze(newMaze);
   };
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [playerPosition]);
+  // Regenerate the maze on button click
+  const handleRegenerate = () => {
+    generateNewMaze();
+  };
 
   return (
-    <div className="maze-grid">
-      {initialMaze.map((row, rowIndex) => (
-        row.map((cell, colIndex) => {
-          const isPlayerHere = playerPosition.x === rowIndex && playerPosition.y === colIndex;
-          return (
-            <div
-              key={`${rowIndex}-${colIndex}`}
-              className={`maze-cell ${cell === 1 ? 'wall' : 'path'}`}
-            >
-              {isPlayerHere && (
-                <motion.div
-                  className="player"
-                  initial={false}
-                  animate={{
-                    x: 0,
-                    y: 0,
-                  }}
-                  transition={{ type: 'spring', stiffness: 300 }}
+    <div className="maze-container">
+      {showSidebar && (
+        <div className="sidebar">
+          <h2>Learn Prim's Algorithm</h2>
+          <p>
+            Prim's Algorithm generates a maze by starting from a random cell,
+            adding adjacent walls to a frontier list, and selectively removing
+            walls to carve a path through the maze. It ensures every cell is
+            reachable from any other cell with no loops.
+          </p>
+          <button onClick={() => setShowSidebar(false)} className="close-sidebar">
+            Close
+          </button>
+        </div>
+      )}
+      <div className="maze-wrapper">
+        <button onClick={handleRegenerate} className="regenerate-button">
+          Generate New Maze
+        </button>
+        <div className="maze-grid">
+          {maze.map((row, rowIndex) => (
+            <div key={rowIndex} className="maze-row">
+              {row.map((cell, colIndex) => (
+                <div
+                  key={colIndex}
+                  className={`maze-cell ${cell === 1 ? 'wall' : 'path'}`}
                 >
-                  P
-                </motion.div>
-              )}
+                  {cell === 0 && ' '} {/* Optional: Render paths */}
+                </div>
+              ))}
             </div>
-          );
-        })
-      ))}
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
