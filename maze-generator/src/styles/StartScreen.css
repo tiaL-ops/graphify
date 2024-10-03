@@ -1,0 +1,26 @@
+.start-screen {
+    margin-top: 50px;
+  }
+  
+  .start-screen h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .mode-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mode-btn:hover {
+    background-color: #45a049;
+  }
+  

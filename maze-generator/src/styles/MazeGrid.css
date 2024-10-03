@@ -3,6 +3,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 40px;
+  background: #f7fafc;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  color: #333;
 }
 
 .maze-wrapper {
@@ -10,11 +15,9 @@
 }
 
 .maze-grid {
-  display: inline-block;
-}
-
-.maze-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(9, 40px); /* Adjust '9' to match the width of your maze */
+  grid-gap: 5px;
 }
 
 .maze-cell {
@@ -24,12 +27,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .wall {
-  background-color: black;
+  background-color: #2d3748;
 }
 
 .path {
@@ -37,15 +39,15 @@
 }
 
 .visited {
-  background-color: lightblue;
+  background-color: #63b3ed;
 }
 
 .start-point {
-  background-color: lightgreen;
+  background-color: #48bb78;
 }
 
 .end-point {
-  background-color: pink;
+  background-color: #ed64a6;
 }
 
 .player {
@@ -60,5 +62,11 @@
 }
 
 .decision-display {
-  margin: 20px;
+  margin-top: 20px;
+  font-size: 1.4rem;
+  color: #2d3748;
+  background: #e2e8f0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }

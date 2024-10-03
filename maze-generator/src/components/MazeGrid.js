@@ -3,10 +3,10 @@ import { generatePrimMaze } from '../algorithms/prims';
 import '../styles/MazeGrid.css';
 
 const directions = [
-  { x: 0, y: -1, name: 'Up' },  // Up
-  { x: 0, y: 1, name: 'Down' },  // Down
-  { x: -1, y: 0, name: 'Left' }, // Left
-  { x: 1, y: 0, name: 'Right' }  // Right
+  { x: 0, y: -1, name: 'Up' },
+  { x: 0, y: 1, name: 'Down' },
+  { x: -1, y: 0, name: 'Left' },
+  { x: 1, y: 0, name: 'Right' },
 ];
 
 const MazeGrid = () => {
@@ -18,8 +18,8 @@ const MazeGrid = () => {
   const [stack, setStack] = useState([]);
   const [backtrack, setBacktrack] = useState([]);
   const [decision, setDecision] = useState('');
-  const [isFinished, setIsFinished] = useState(false); // To stop when DFS finishes
-  
+  const [isFinished, setIsFinished] = useState(false);
+
   const start = { x: 0, y: 0 };
   const end = { x: width - 1, y: height - 1 };
 
@@ -64,14 +64,12 @@ const MazeGrid = () => {
       setPlayerPosition({ x, y });
       setDecision(`Visited (${x},${y})`);
 
-      // Check if the end is reached
       if (x === end.x && y === end.y) {
         setDecision('DFS completed. Reached the end!');
         setIsFinished(true);
         return [];
       }
 
-      // Add valid neighboring nodes to the stack
       let hasValidMove = false;
       for (const direction of directions) {
         const newX = x + direction.x;
@@ -83,7 +81,6 @@ const MazeGrid = () => {
         }
       }
 
-      // Handle backtracking visualization
       if (!hasValidMove) {
         setBacktrack((prevBacktrack) => [...prevBacktrack, { x, y }]);
         setDecision('No valid moves, backtracking...');
@@ -107,30 +104,34 @@ const MazeGrid = () => {
           <h4>{decision}</h4>
         </div>
         <div className="maze-grid">
-          {maze.map((row, rowIndex) => (
-            <div key={rowIndex} className="maze-row">
-              {row.map((cell, colIndex) => (
-                <div
-                  key={colIndex}
-                  className={`maze-cell ${cell === 1 ? 'wall' : 'path'} ${
-                    start.x === colIndex && start.y === rowIndex ? 'start-point' : ''
-                  } ${end.x === colIndex && end.y === rowIndex ? 'end-point' : ''} ${
-                    playerPosition.x === colIndex && playerPosition.y === rowIndex ? 'player' : ''
-                  } ${
-                    visited.has(`${colIndex},${rowIndex}`) ? 'visited' : ''
-                  } ${
-                    backtrack.some(pos => pos.x === colIndex && pos.y === rowIndex) ? 'backtrack' : ''
-                  }`}
-                >
-                  {start.x === colIndex && start.y === rowIndex && <span className="start-icon">S</span>}
-                  {end.x === colIndex && end.y === rowIndex && <span className="end-icon">E</span>}
-                  {playerPosition.x === colIndex && playerPosition.y === rowIndex && (
-                    <span className="player-icon">😊</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
+          {maze.flatMap((row, rowIndex) =>
+            row.map((cell, colIndex) => (
+              <div
+                key={`${rowIndex}-${colIndex}`}
+                className={`maze-cell ${cell === 1 ? 'wall' : 'path'} ${
+                  start.x === colIndex && start.y === rowIndex ? 'start-point' : ''
+                } ${end.x === colIndex && end.y === rowIndex ? 'end-point' : ''} ${
+                  playerPosition.x === colIndex && playerPosition.y === rowIndex ? 'player' : ''
+                } ${
+                  visited.has(`${colIndex},${rowIndex}`) ? 'visited' : ''
+                } ${
+                  backtrack.some((pos) => pos.x === colIndex && pos.y === rowIndex)
+                    ? 'backtrack'
+                    : ''
+                }`}
+              >
+                {start.x === colIndex && start.y === rowIndex && (
+                  <span className="start-icon">S</span>
+                )}
+                {end.x === colIndex && end.y === rowIndex && (
+                  <span className="end-icon">E</span>
+                )}
+                {playerPosition.x === colIndex && playerPosition.y === rowIndex && (
+                  <span className="player-icon">😊</span>
+                )}
+              </div>
+            ))
+          )}
         </div>
         <button onClick={dfsStep} className="next-step-button" disabled={isFinished}>
           Next Step

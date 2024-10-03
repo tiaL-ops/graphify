@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import MazeGrid from './components/MazeGrid';  
+import CycleDetection from './components/CycleDetection'; // New component
 import './styles/App.css';                    
 
 const App = () => {
@@ -9,20 +10,20 @@ const App = () => {
   if (mode === null) {
     return (
       <div className="App">
-        <h1>Welcome to Maze Generator</h1>
+        <h1>Choose a topic</h1>
         <div className="start-screen">
-          <button onClick={() => setMode('play')}>Play Mode</button>
-          <button onClick={() => setMode('learn')}>Learn Mode</button>
+          <button onClick={() => setMode('play')}>Understand DFS</button>
+          <button onClick={() => setMode('learn')}>Cycle Detection</button>
         </div>
       </div>
     );
   }
 
-  // Once a mode is selected, display the MazeGrid component
+  // Conditionally render different components based on the mode
   return (
     <div className="App">
-      <h1>{mode === 'play' ? 'Play Mode' : 'Learn Mode'}</h1>
-      <MazeGrid />
+      <h1>{mode === 'play' ? 'Understanding DFS' : 'Cycle Detection'}</h1>
+      {mode === 'play' ? <MazeGrid /> : <CycleDetection />}
     </div>
   );
 };
