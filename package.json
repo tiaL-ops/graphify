@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "d3": "^7.9.0",
     "framer-motion": "^11.9.0"
   }
 }
